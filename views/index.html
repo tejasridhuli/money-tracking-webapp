@@ -1,0 +1,36 @@
+<body>
+  <h1>Money Tracker</h1>
+  <form id="transactionForm" action="/transaction" method="post">
+    <label for="type">Type:</label>
+    <select id="type" name="type" required>
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required>
+
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <h2>Transaction History</h2>
+  <ul id="transactionList"></ul>
+
+  <script>
+    // Fetch and display transactions
+    fetch('/transactions')
+      .then(response => response.json())
+      .then(transactions => {
+        const transactionList = document.getElementById('transactionList');
+        transactions.forEach(transaction => {
+          const li = document.createElement('li');
+          li.textContent = `${transaction.type} - $${transaction.amount} - ${transaction.description}`;
+          transactionList.appendChild(li);
+        });
+      })
+      .catch(error => console.error('Error fetching transactions:', error));
+  </script>
+</body>
